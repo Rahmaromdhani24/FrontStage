@@ -1,0 +1,34 @@
+<div class="datePicker">
+  <mat-form-field appearance="fill">
+    <mat-label>Choisir une date</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (ngModelChange)="onDateChange($event)">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</div>                                
+<div class="tab">   
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col-md-12">
+        <table id="example" class="table table-striped" style="width:100%">
+          <thead>
+            <tr>
+              <th>Matricule</th>
+              <th>Nom</th>
+              <th>Date d'effet</th>
+              <th>Date Prochain Avancement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let av of service.AvancementsData ">
+              <td>{{ av.tpersonnel.mle }}</td>
+              <td>{{ av.nom }}</td>
+              <td>{{ transformerDate(av.dEffet) }}</td>
+              <td>{{ transformerDate(av.dpav) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

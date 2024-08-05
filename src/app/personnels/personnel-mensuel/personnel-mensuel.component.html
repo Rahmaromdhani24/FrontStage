@@ -1,0 +1,152 @@
+<div class="loading" *ngIf="showLoader">
+    <span id="loader" class="loader"></span>
+  </div>
+  <div class="btnContainer" *ngIf="!showLoader">
+    <button type="button" class="btn rounded-5 d-flex align-items-center"
+            id="btnclasse" routerLink="/changerSituationPersonnelMensuel"
+            [disabled]="!service.getSelectedPersonnel()">
+      Modifier Situation Personnel
+      <span class="bg-light ms-2 rounded-circle d-flex align-items-center justify-content-center"
+            style="width: 40px; height: 40px;">
+        <i class="fa-solid fa-sync fa-lg"></i>
+      </span>
+    </button>
+  </div>
+  <nav *ngIf="!showLoader">
+    <a href="#home" id="logo"></a>
+    <label for="hamburger">
+      <i class="fa-solid fa-bars"></i>
+    </label>
+    <ul>
+        <li class="dropdown">
+            <a class="active">
+              <i class="far fa-address-book"></i> &nbsp; {{ navText }} &nbsp; <i class="fa-solid fa-angle-down"></i>
+            </a>
+            <div class="dropdown-content">
+              <a routerLink="/personnelHoraire" (click)="updateNavText('Personnel Horaire')">Personnel Horaire</a>
+              <a routerLink="/personnelMensuel" (click)="updateNavText('Personnel Mensuel')">Personnel Mensuel</a>
+              <a routerLink="/personnelExceptionnel57Ans" (click)="updateNavText('Exceptionnel de 57 ans')"> Exceptionnel de 57 ans</a>
+              <a routerLink="/accueil" (click)="updateNavText('Tous Les Personnels')"> Tous Les Personnels</a>
+
+            </div>
+          </li>          
+          <li class="dropdown">
+            <a class="blanc" ><i class="far fa-chart-bar"></i> &nbsp; Avancements des Echelons &nbsp; <i class="fa-solid fa-angle-down"></i></a>
+            <div class="dropdown-content">
+              <a routerLink="/avancementHoraire">Avancement Personnel Horaire</a>
+              <a routerLink="/avancementMensuel">Avancement Personnel Mensuel</a>
+              <a routerLink="/modifierAvancementsMoisHoraire">Modifier Avancement  Horaire</a>
+              <a routerLink="/modifierAvancementsMoisMensuel">Modifier Avancement  Mensuel</a>
+            </div>
+          </li>
+      <li>
+        <a routerLink="/historiques"><i class="far fa-clone"></i> &nbsp; Historiques &nbsp; </a>
+      </li>
+      <li>
+        <a routerLink="/tableauAv"><i class="fa-solid fa-list"></i> &nbsp; Tableau d'avancements &nbsp; </a>
+      </li>
+      <li>
+        <a class="classDeconnexion"><span (click)="deconnexion()"><i class="fa-solid fa-right-from-bracket"></i> &nbsp; Déconnexion</span></a>
+      </li>
+    </ul>
+  </nav>
+    <div class="tab" *ngIf="!showLoader">
+        <div class="container">
+          <div class="row mt-5">
+            <div class="col-md-12 mx-auto">
+            <table id="homePersonnels" class="table table-striped" style="width:100%">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Matricule</th>
+                <th>Nom Prénom </th>
+                <th>Date naissance</th>
+                <th>Age</th>
+                <th>Date d'ancienneté</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor ="let personnel of service.PersonnelsData ; let i = index ">
+                <td><input type="radio" name="selectedPersonnel" [checked]="personnel.selected" (change)="toggleSelection(personnel)"></td>
+                <td>{{personnel.mle}}</td>
+                <td>{{personnel.nom}} &nbsp;{{personnel.prenom}}</td>
+                <td>{{ transfomerDate(personnel.date_N)}}</td>
+                <td>{{ calculateAge(personnel.date_N)}}</td>
+                <td>{{ transfomerDate(personnel.date_Anc)}}</td>
+                <td>
+                  <span title="Historique">
+                    <i class="fas fa-history" routerLink="/historiquesPersonnel/{{personnel.mle}}"></i>
+                  </span>
+                  <span> &nbsp;&nbsp;</span>
+                  <span title="Affichage détaillé" data-toggle="modal" data-target="#exampleModalCenter" (click)="afficheInformations(personnel.mle)">
+                    <i class="fas fa-eye blue-icon" ></i> 
+                  </span>
+                </td>
+               </tr>
+            </tbody>         
+          </table>
+            </div>
+          </div>
+        </div>
+      </div>
+  <!-- Modal --->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title blue-title" id="exampleModalCenterTitle"><u>Informations sur le personnel</u></h5>
+          <button type="button" class="btn btn-light" id="btnClose"  data-dismiss="modal">
+            <span aria-hidden="true" class="croix-grande">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <table class="table">
+          <tbody *ngIf="informationsPersonnel">
+            <tr> <th scope="row">Matricule</th> 
+             <td *ngIf="informationsPersonnel.mle; else noData">{{informationsPersonnel.mle}}</td> </tr>
+            <tr><th scope="row">Nom et Prénom </th>
+              <td *ngIf="informationsPersonnel.nom && informationsPersonnel.prenom; else noData">
+                {{informationsPersonnel.nom}} &nbsp; {{informationsPersonnel.prenom}} </td>
+            </tr>  
+            <tr><th scope="row">Télephone </th>
+              <td *ngIf="informationsPersonnel.tel; else noData"> {{informationsPersonnel.tel}} </td>
+            </tr>  
+            <tr><th scope="row">CIN </th>
+              <td  *ngIf="informationsPersonnel.cin; else noData" >{{informationsPersonnel.cin}}</td></tr>  
+            <tr><th scope="row">Addresse</th>
+              <td *ngIf="informationsPersonnel.adresse; else noData"> {{ informationsPersonnel.adresse}} , {{ informationsPersonnel.ville}}  {{ informationsPersonnel.cpostal}}   </td>
+            </tr>  
+          <!-- Bloc pour les postes du personnel -->
+            <tr>
+              <th scope="row">Département</th>
+              <td *ngIf="informationsPersonnel.nom_Dep; else noData"> {{ informationsPersonnel.nom_Dep }} </td>
+            </tr>
+            <tr>
+              <th scope="row">Service</th>
+              <td *ngIf="informationsPersonnel.nom_Service else noData"> {{ informationsPersonnel.nom_Service }} </td>
+            </tr>
+            <tr>
+              <th scope="row">Qualification</th>
+              <td *ngIf="informationsPersonnel.qualification; else noData"> {{ informationsPersonnel.qualification }} </td>
+            </tr>
+            <tr>
+              <th scope="row">College</th>
+              <td *ngIf="informationsPersonnel.college ;  else noData"> {{informationsPersonnel.college }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Réference</th>
+              <td *ngIf="informationsPersonnel.ref; else noData"> {{ informationsPersonnel.ref }} </td>
+            </tr>
+          </tbody>
+          <ng-template #noData>
+         <td>Pas de données</td>  
+          </ng-template>
+        </table>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="styleBouton">Quitter</button>
+        </div>
+        <!--div class="modal-footer d-flex justify-content-center">
+        </div-->
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,50 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .bold-text {
+    font-weight: 700; /* Utilise le poids 700 pour le texte en gras */
+  }
+  @font-face {
+    font-family: 'MyCustomFont';
+    src: url('/assets/fonts/MyCustomFont-Regular.woff2') format('woff2'),
+         url('/assets/fonts/MyCustomFont-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'MyCustomFont';
+    src: url('/assets/fonts/MyCustomFont-Bold.woff2') format('woff2'),
+         url('/assets/fonts/MyCustomFont-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  body {
+    font-family: 'MyCustomFont', sans-serif;
+  }
+  
+  .bold-text {
+    font-weight: 700; /* Utilise le poids 700 pour le texte en gras */
+  }
+  
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+/* style.css */
+.title-row {
+  font-weight: bold;
+  text-align: center;
+}
+
+.sub-title-row {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.normal-row {
+  /* Style par défaut pour les autres lignes */
+}

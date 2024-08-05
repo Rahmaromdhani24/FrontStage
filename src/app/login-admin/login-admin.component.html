@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-6 col-lg-5">
+					<div class="login-wrap p-4 p-md-5">
+		      	<div class="icon d-flex align-items-center justify-content-center">
+		      		<span class="fas fa-user"></span>
+		      	</div>
+		      	<h3 class="text-center mb-4">Connexion Administrateur</h3>
+						<form  class="login-form" (ngSubmit)=" login(f)" #f=ngForm>
+		      		<div class="form-group">
+		      			<input type="text" class="form-control rounded-left"  ngModel name="matricule" required #matricule="ngModel" placeholder="Matricule" required>
+		      		</div>
+					<div class="form-group d-flex align-items-center">
+						<input type="password" [type]="passwordFieldType" class="form-control rounded-left" ngModel name="pwd" required #pwd="ngModel" placeholder="Mot de passe">
+						<i class="fa-regular fa-eye toggle-password" (click)="togglePasswordVisibility()"></i>
+					</div>										
+	                <div class="form-group">
+	            	    <button type="submit" class="btn btn-primary rounded submit p-3 px-5"> <b>Se Connecter</b></button>
+	                </div>
+	          </form>
+	        </div>
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

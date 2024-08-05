@@ -1,0 +1,120 @@
+<div class="loading" *ngIf="showLoader">
+  <span id="loader" class="loader"></span>
+</div>
+<nav *ngIf="!showLoader" >
+  <a href="#home" id="logo"></a>
+  <input type="checkbox" id="hamburger" />
+  <label for="hamburger">
+    <i class="fa-solid fa-bars"></i>
+  </label>
+  <ul>
+    <li>
+      <a routerLink="/accueil"><i class="far fa-address-book"></i> &nbsp;Personnels &nbsp; </a>
+    </li>
+    <li>
+      <a  routerLink="/av" ><i class="far fa-chart-bar"></i> &nbsp; Avancements des Echelons &nbsp;</a>
+    </li>
+    <li>
+      <a routerLink="/historiques"class="active"><i class="far fa-clone"></i> &nbsp;Historiques&nbsp; </a>
+    </li>
+    <li>
+      <a class="classDeconnexion"><span (click)="deconnexion()"><i class="fa-solid fa-right-from-bracket"></i> &nbsp; Déconnexion</span></a>
+    </li>
+  </ul>
+</nav>
+    <div class="tab">
+        <div class="container">
+          <div class="row mt-5">
+            <div class="col-md-12 mx-auto">
+              <table id="example" class="table table-striped" style="width:100%">
+                <thead>
+                  <tr>
+                    <th>Matricule</th>
+                    <th>Nom Prénom </th>
+                    <th>SB / TH </th>
+                    <th> Date d'effet </th>
+                    <th> Action </th>
+        
+        
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor ="let avancement of service.Historiques ">
+                    <td>{{avancement.tpersonnel.mle}}</td>
+                    <td>{{avancement.nom}}</td>
+                    <td>{{ avancement.sbase ?? avancement.th }}</td>
+                    <td>{{transformerDate(avancement.dEffet)}}</td>
+                    <td>
+                      <span title="Affichage détaillé" data-toggle="modal" data-target="#exampleModalCenter">
+                        &nbsp;&nbsp;&nbsp;<i class="fas fa-eye blue-icon" ></i> <!-- Appliquer la classe blue-icon ici -->
+                      </span>
+                    </td>
+                   </tr>
+                </tbody>
+               
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <tbody *ngIf="informationsAvancement">
+            <tr> <th scope="row">Matricule</th> 
+             <td *ngIf="informationsAvancement.tpersonnel.mle; else noData">{{informationsAvancement.tpersonnel.mle}}</td>   </tr>
+         
+              <tr><th scope="row">Nom et Prénom </th>
+                <td *ngIf="informationsAvancement.nom ; else noData">
+                {{informationsAvancement.nom}}</td>
+              </tr>  
+            <tr><th scope="row" >Catégorie </th>
+              <td *ngIf="informationsAvancement.cat ; else noData">{{informationsAvancement.cat}}</td>
+            </tr>  
+            <tr><th scope="row" *ngIf="test === 1" >Sous Catégorie </th>
+              <td *ngIf="test === 1" >{{informationsAvancement.scat}}</td></tr>  
+  
+            <tr><th scope="row">Echelon</th>
+              <td *ngIf="informationsAvancement.ech ; else noData">{{informationsAvancement.ech}}</td></tr>  
+   
+            <tr><th scope="row">Date d'effet</th>
+              <td>   {{ transformerDate(informationsAvancement.dEffet)}} </td>
+            </tr>  
+            <tr><th scope="row">Date de Prochain avancement </th>
+              <td>   {{ transformerDate(informationsAvancement.dpav)}} </td>
+            </tr>  
+            <tr *ngIf="informationsAvancement.sbase">
+              <th scope="row">Salaire de base</th>
+              <td *ngIf="informationsAvancement.sbase ; else noData">{{informationsAvancement.sbase}}</td>
+            </tr>  
+           
+            <tr *ngIf="informationsAvancement.th">
+                <th scope="row">Taux Horaire</th>
+                <td *ngIf="informationsAvancement.th ; else noData">{{informationsAvancement.th}}</td>
+            </tr>  
+            <tr>
+              <th scope="row">ind_diff</th>
+              <td *ngIf="informationsAvancement.indDiff ; else noData">{{informationsAvancement.indDiff}}</td></tr>  
+          <!-- Bloc pour les postes du personnel -->
+            <tr>
+              <th scope="row">Qualification</th>
+              <td  *ngIf="afficheQualificationPersonnel(informationsAvancement.tpersonnel.mle) ;else noData">{{afficheQualificationPersonnel(informationsAvancement.tpersonnel.mle)}}</td></tr>
+          </tbody>
+          <ng-template #noData>
+         <td>Pas de données</td>  
+          </ng-template>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"> Quitter</button>
+      </div>
+    </div>
+  </div>
+</div>

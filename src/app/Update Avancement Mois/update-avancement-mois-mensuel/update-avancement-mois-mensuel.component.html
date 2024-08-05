@@ -1,0 +1,126 @@
+<div class="loading" *ngIf="showLoader">
+    <span id="loader" class="loader"></span>
+  </div>
+  <nav *ngIf="!showLoader">
+    <a href="#home" id="logo"></a>
+    <label for="hamburger">
+      <i class="fa-solid fa-bars"></i>
+    </label>
+    <ul>
+      <li class="dropdown">
+        <a class="blanc" >
+          <i class="far fa-address-book"></i> &nbsp; Personnels &nbsp; <i class="fa-solid fa-angle-down"></i>
+        </a>
+        <div class="dropdown-content">
+          <a routerLink="/personnelHoraire" >Personnel Horaire</a>
+          <a routerLink="/personnelMensuel" >Personnel Mensuel</a>
+          <a routerLink="/personnelExceptionnel57Ans">Exceptionnel de 57 ans</a>
+          <a routerLink="/accueil">Tous Les Personnels</a>
+
+        </div>
+      </li>     
+      <li class="dropdown">
+        <a class="active"><i class="far fa-chart-bar"></i> &nbsp;  {{ navText }} &nbsp; <i class="fa-solid fa-angle-down"></i></a>
+        <div class="dropdown-content">
+          <a routerLink="/avancementHoraire" (click)="updateNavText('Avancement Personnel Horaire')">Avancement Personnel Horaire</a>
+          <a routerLink="/avancementMensuel" (click)="updateNavText('Avancement Personnel Mensuel')">Avancement Personnel Mensuel</a>
+          <a routerLink="/modifierAvancementsMoisMensuel" (click)="updateNavText('Modifier Avancement  Horiare')">Modifier Avancement  Horaire</a>
+        </div>
+      </li>
+      <li>
+        <a routerLink="/historiques"><i class="far fa-clone"></i> &nbsp;Historiques&nbsp; </a>
+      </li>
+      <li>
+        <a routerLink="/tableauAv"><i class="fa-solid fa-list"></i> &nbsp;Tabeau d'avancements &nbsp; </a>
+      </li>
+      <li>
+        <a class="classDeconnexion"><span (click)="deconnexion()"><i class="fa-solid fa-right-from-bracket"></i> &nbsp; Déconnexion</span></a>
+      </li>  
+    </ul>
+  </nav>
+  <form *ngIf="!showLoader">
+    <table>
+      <tr>
+        <th id="colonneMle">Mle</th>
+        <th>Nom Prénom</th>
+        <th id="colonneMle2">Catégorie</th>
+        <th id="colonneMle2">Sous Catégorie</th>
+        <th id="colonneMle2">Echelon</th>
+        <th>Date d'effet</th>
+        <th>Date de P.Av</th>
+        <th>Sanctions</th>
+        <th id="colonneMle3">Note</th>
+        <th>Observation</th>
+      </tr>
+      <tr *ngFor="let avancement of serviceAvancement.selectedAvancements; let i = index">
+        <td><input type="text" [(ngModel)]="avancement.tpersonnel.mle" name="mle-{{i}}"></td>
+        <td><input type="text" [(ngModel)]="avancement.nom" name="name-{{i}}"></td>
+        <td><input type="text" [(ngModel)]="avancement.cat" name="cat-{{i}}"></td>
+        <td><input type="text" [disabled]="avancement.sCat == null" [(ngModel)]="avancement.sCat" name="scat-{{i}}"></td>   
+        <td><input type="text" [(ngModel)]="avancement.ech" name="ech-{{i}}"></td>
+        <td><input type="date" [value]="formatDate(avancement.dEffet)" (input)="updateDate(avancement, 'dEffet', $event)" name="dEffet-{{i}}"></td>
+        <td><input type="date" [value]="formatDate(avancement.dpav)" (input)="updateDate(avancement, 'dpav', $event)" name="dpav-{{i}}"></td>
+        <td style="display: flex; align-items: center;">
+          <ng-container *ngIf="!avancement.hasSanctions; else showRedIcon">
+            <span class="icon-green">
+              <i class="fas fa-check-circle fa-lg" style="color: green;"></i>
+            </span>
+          </ng-container>
+          <ng-template #showRedIcon>
+            <span class="icon-red" (click)="getSanctionsPersonnels18Mois(avancement.tpersonnel.mle)" data-toggle="modal" data-target="#modalSanctionsPersonnel">
+              <i class="fas fa-exclamation-circle fa-lg" style="color: red;"></i>
+            </span>
+          </ng-template>
+          <input type="text" [(ngModel)]="avancement.san1" name="sanctions1-{{i}}" style="margin-left: 8px;">   
+          <input type="text" [(ngModel)]="avancement.san2" name="sanctions2-{{i}}" style="margin-left: 8px;">     
+        </td>
+        <td><input type="number" [(ngModel)]="avancement.note" name="note-{{i}}" min="0" max="20" class="note"></td>
+        <td><input type="text" [(ngModel)]="avancement.observation" name="observation-{{i}}"></td>
+      </tr>
+    </table>
+    <button type="button" class="btn btn-outline-success" id="btnok" (click)="sauvegardeAvancements()">Enregistrer</button>
+    <button type="button" class="btn btn-outline-danger" id="btncancel" (click)="annulation()">Annuller</button> 
+  </form>
+  
+  <!-- Modal --->
+  <div class="modal fade" id="modalSanctionsPersonnel" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-custom" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title blue-title" id="exampleModalCenterTitle"><u>Les Sanctions de Personnel</u></h5>
+          <button type="button" class="btn btn-light" id="btnClose"  data-dismiss="modal">
+            <span aria-hidden="true" class="croix-grande">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Sanction</th>
+                <th>Date Debut</th>
+                <th>Duree</th>
+                <th>Date Fin</th>
+                <th>Motif</th>
+                <th>Reference</th>
+                <th>Date Reference</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let sanction of sanctionsPersonnels">
+                <td>{{ sanction.sanction}}</td>
+                <td>{{ ajouterUnJour(sanction.d_Debut) | date:'yyyy-MM-dd' }}</td>
+                <td>{{ sanction.duree}}</td>
+                <td>{{ sanction.d_Fin ? (ajouterUnJour(sanction.d_Fin) | date:'yyyy-MM-dd') : '-' }}</td>
+                <td>{{ sanction.motif}}</td>
+                <td>{{ sanction.ref }}</td>
+                <td>{{ ajouterUnJour(sanction.date_ref) | date:'yyyy-MM-dd' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>

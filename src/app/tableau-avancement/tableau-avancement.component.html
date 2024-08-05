@@ -1,0 +1,61 @@
+<div class="loading" *ngIf="showLoader">
+    <span id="loader" class="loader"></span>
+  </div>
+  <nav *ngIf="!showLoader" >
+    <a href="#home" id="logo"></a>
+    <input type="checkbox" id="hamburger" />
+    <label for="hamburger">
+      <i class="fa-solid fa-bars"></i>
+    </label>
+    <ul>
+     
+    <li class="dropdown">
+      <a class="blanc" >
+          <i class="far fa-address-book"></i> &nbsp; Personnels &nbsp; <i class="fa-solid fa-angle-down"></i>
+      </a>
+      <div class="dropdown-content">
+          <a routerLink="/personnelHoraire" >Personnel Horaire</a>
+          <a routerLink="/personnelMensuel" >Personnel Mensuel</a>
+          <a routerLink="/personnelExceptionnel57Ans">Exceptionnel de 57 ans</a>
+          <a routerLink="/accueil">Tous Les Personnels</a>
+      </div>
+      </li>     
+      <li class="dropdown">
+      <a class="blanc"  ><i class="far fa-chart-bar"></i> &nbsp; Avancements des Echelons &nbsp; <i class="fa-solid fa-angle-down"></i></a>
+      <div class="dropdown-content">
+          <a routerLink="/avancementHoraire"> Avancement Personnel Horaire</a>
+          <a routerLink="/avancementMensuel"> Avancement Personnel Mensuel</a>
+          <a routerLink="/modifierAvancementsMoisHoraire">Modifier Avancement  Horaire</a>
+          <a routerLink="/modifierAvancementsMoisMensuel">Modifier Avancement  Mensuel</a>
+      </div>
+      </li>  
+      <li>
+        <a routerLink="/historiques"><i class="far fa-clone"></i> &nbsp;Historiques&nbsp; </a>
+      </li>
+      <li>
+        <a routerLink="/tableauAv" class="active"><i class="fa-solid fa-list"></i> &nbsp;Tabeau d'avancements &nbsp; </a>
+      </li>
+      <li>
+        <a class="classDeconnexion"><span (click)="deconnexion()"><i class="fa-solid fa-right-from-bracket"></i> &nbsp; Déconnexion</span></a>
+      </li>
+    </ul>
+  </nav>
+
+  <!--- ***************************************************************************************************-->
+  <div class="container" *ngIf="!showLoader">
+    <input *ngIf="serviceAvancement.testTelechargement == 1 ; else pasHistoriques" type="text" [(ngModel)]="searchTerm" placeholder="recherche ..." class="search-input" />
+    <div class="item" *ngFor="let file of filteredFiles">
+      <div class="filename">
+        <p>{{ file.fileName }}</p>
+        <div class="filedata">
+          <span>●</span>
+          <span>{{ file.size }}</span>
+        </div>
+      </div>
+      <img src="./assets/pdf.png"  (click)="download(file.fileName)" class="iconePdf">
+      <img src="./assets/excel.png" class="iconeExcel" (click)="downloadExcel(file.fileName)" >
+    </div>
+    <ng-template #pasHistoriques>
+       <img src="./assets/introvable.jpeg" class="introvable">
+    </ng-template>
+  </div>

@@ -1,0 +1,89 @@
+<div class="loading" *ngIf="showLoader">
+  <span id="loader" class="loader"></span>
+</div>
+<div class="dateAvancementContainer">
+  <div class="dateAvancement" *ngIf="!showLoader">
+    <mat-form-field appearance="fill">
+      <mat-label>Choisir une date</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (ngModelChange)="onDateChange($event)">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+</div>
+<div class="btnContainer" *ngIf="nbrNotifications !== 0">
+  <div class="btnclasse" *ngIf="!showLoader">
+    <button type="button" class="icon-button" routerLink="/avancementManquants">
+    <span class="material-icons">notifications</span>
+    <span class="icon-button__badge">{{nbrNotifications}}</span>
+    </button>
+  </div>
+</div>
+<nav *ngIf="!showLoader" >
+  <a href="#home" id="logo"></a>
+  <label for="hamburger">
+    <i class="fa-solid fa-bars"></i>
+  </label>
+  <ul>
+    <li class="dropdown">
+      <a class="blanc" >
+        <i class="far fa-address-book"></i> &nbsp; Personnels &nbsp; <i class="fa-solid fa-angle-down"></i>
+      </a>
+      <div class="dropdown-content">
+        <a routerLink="/personnelHoraire" >Personnel Horaire</a>
+        <a routerLink="/personnelMensuel" >Personnel Mensuel</a>
+        <a routerLink="/personnelExceptionnel57Ans">Exceptionnel de 57 ans</a>
+        <a routerLink="/accueil">Tous Les Personnels</a>
+
+      </div>
+    </li>     
+    <li class="dropdown">
+      <a class="active"><i class="far fa-chart-bar"></i> &nbsp;  {{ navText }} &nbsp; <i class="fa-solid fa-angle-down"></i></a>
+      <div class="dropdown-content">
+        <a routerLink="/avancementHoraire" (click)="updateNavText('Avancement Personnel Horaire')">Avancement Personnel Horaire</a>
+        <a routerLink="/avancementMensuel" (click)="updateNavText('Avancement Personnel Mensuel')">Avancement Personnel Mensuel</a>
+        <a routerLink="/modifierAvancementsMoisMensuel" (click)="updateNavText('Modifier Avancement  Mensuel')">Modifier Avancement  Mensuel</a>
+      </div>
+    </li>
+    <li>
+      <a routerLink="/historiques"><i class="far fa-clone"></i> &nbsp;Historiques&nbsp; </a>
+    </li>
+    <li>
+      <a routerLink="/tableauAv"><i class="fa-solid fa-list"></i> &nbsp;Tabeau d'avancements &nbsp; </a>
+    </li>
+    <li>
+      <a class="classDeconnexion"><span (click)="deconnexion()"><i class="fa-solid fa-right-from-bracket"></i> &nbsp; Déconnexion</span></a>
+    </li>  
+  </ul>
+</nav>
+    <div class="tab" *ngIf="!showLoader">   
+      <div class="container">
+        <div class="row mt-5">
+          <div class="col-md-12">             
+          <table id="example" class="table table-striped" style="width:100%">
+          <thead>
+            <tr>    
+              <th><input type="checkbox" (change)="selectAll($event)" /></th> <!-- Checkbox to select/deselect all -->        
+              <th>Matricule</th>
+              <th>Nom</th>
+              <th>Date d'effet</th>
+              <th>Date P.Av</th>
+              <th>Echelon</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let av of service.AvancementsData; let i = index">
+             <td><input type="checkbox" (change)="onRowSelect($event, av)" /></td> <!-- Checkbox for individual rows -->
+             <td>{{ av.tpersonnel.mle}} </td>
+             <td> {{ av.nom}} </td>
+             <td> {{transformerDate(av.dEffet)}}</td>
+             <td> {{transformerDate(av.dpav)}}</td>  
+             <td> {{ av.ech}} </td>
+             </tr>
+          </tbody>
+        </table>
+        <button type="button" class="btn btn-primary"  id="btnSuivant"  *ngIf="auMoinsUneSelection()" (click)="selection()">Suivant</button>
+          </div>
+        </div>
+      </div>
+    </div>

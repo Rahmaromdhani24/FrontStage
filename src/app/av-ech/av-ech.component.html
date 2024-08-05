@@ -1,0 +1,101 @@
+<div class="loading" *ngIf="showLoader">
+  <span id="loader" class="loader"></span>
+</div>
+<div>
+<nav class="navbar navbar-expand-custom navbar-mainbg">
+  <a class="navbar-brand navbar-logo" href="#"></a>
+  <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <i class="fas fa-bars text-white"></i>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <ul class="navbar-nav ml-auto">
+  <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
+  <li class="nav-item" routerLink="/accueil">
+  <a class="nav-link" href="javascript:void(0);"><i class="far fa-address-book"></i>Personnels</a>
+  </li>
+  <li class="nav-item" routerLink="/avEch">
+   <a class="nav-link" href="javascript:void(0);" style="color: #fff;"><i class="far fa-chart-bar"></i>Avanchements des Echelons</a>
+  </li>
+  <li class="nav-item" routerLink="/historiques">
+  <a class="nav-link" href="javascript:void(0);"><i class="far fa-clone"></i>Historiques</a>
+  </li>
+  <li class="nav-item">
+  <a class="nav-link" href="javascript:void(0);"><i class="fa-solid fa-right-from-bracket"></i>Déconnexion </a>
+  </li>
+  </ul>
+  </div>
+  </nav>
+
+  <div class="tab" *ngIf="test== false">   
+      <div class="container">
+        <div class="row mt-5">
+          <div class="col-md-12">
+          <table id="example1" class="table table-striped" style="width:100%">
+          <thead>
+            <tr>
+              <th>Matricule</th>
+              <th>Nom</th>
+              <th>Date d'effet</th>
+              <th>Date Prochain Avancement</th>
+              <th>Echelon</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor ="let av of service.AvancementsData ">
+             <td>{{ av.tpersonnel.mle}} </td>
+             <td> {{ av.nom}} </td>
+             <td> {{transformerDate(av.deffet)}}</td>
+             <td> {{transformerDate(av.dpav)}}</td>  
+             <td> {{ av.ech}} </td>
+             <!--td>
+               {{ av.observation !== null && av.observation !== undefined ? av.observation : '-' }}
+             </td-->
+             </tr>
+          </tbody>
+         
+        </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab" *ngIf="test== true">   
+      <div class="container">
+        <div class="row mt-5">
+          <div class="col-md-12">
+          <table id="example2" class="table table-striped" style="width:100%">
+          <thead>
+            <tr>
+              <th>Matricule</th>
+              <th>Nom</th>
+              <th>Date d'effet</th>
+              <th>Date Prochain Avancement</th>
+              <th>Echelon</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor ="let av of service.AvancementsData ">
+             <td>{{ av.tpersonnel.mle}} </td>
+             <td> {{ av.nom}} </td>
+             <td> {{transformerDate(av.deffet)}}</td>
+             <td> {{transformerDate(av.dpav)}}</td>  
+             <td> {{ av.ech}} </td>
+             <!--td>
+               {{ av.observation !== null && av.observation !== undefined ? av.observation : '-' }}
+             </td-->
+             </tr>
+          </tbody>
+         
+        </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dateAvancement">
+      <mat-form-field appearance="fill">
+        <mat-label>Choisir une date</mat-label>
+        <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+     </mat-form-field>
+    </div>
+</div>

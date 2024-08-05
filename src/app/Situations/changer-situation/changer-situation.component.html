@@ -1,0 +1,214 @@
+    <div class="loading" *ngIf="showLoader">
+        <span id="loader" class="loader"></span>
+    </div>   
+    <nav *ngIf="!showLoader" >
+        <a href="#home" id="logo"></a>
+        <label for="hamburger">
+          <i class="fa-solid fa-bars"></i>
+        </label>
+        <ul>
+         <li class="dropdown">
+        <a class="blanc" >
+            <i class="far fa-address-book"></i> &nbsp; Personnels &nbsp; <i class="fa-solid fa-angle-down"></i>
+        </a>
+        <div class="dropdown-content">
+            <a routerLink="/personnelHoraire" >Personnel Horaire</a>
+            <a routerLink="/personnelMensuel" >Personnel Mensuel</a>
+            <a routerLink="/personnelExceptionnel57Ans">Exceptionnel de 57 ans</a>
+            <a routerLink="/accueil">Tous Les Personnels</a>
+
+        </div>
+        </li>     
+        <li class="dropdown">
+        <a class="blanc"><i class="far fa-chart-bar"></i> &nbsp; Avancements des Echelons &nbsp; <i class="fa-solid fa-angle-down"></i></a>
+        <div class="dropdown-content">
+            <a routerLink="/avancementHoraire"> Avancement Personnel Horaire</a>
+            <a routerLink="/avancementMensuel"> Avancement Personnel Mensuel</a>
+            <a routerLink="/modifierAvancementsMoisHoraire">Modifier Avancement  Horaire</a>
+           <a routerLink="/modifierAvancementsMoisMensuel">Modifier Avancement  Mensuel</a>
+        </div>
+        </li>      
+          <li>
+            <a routerLink="/historiques"><i class="far fa-clone"></i> &nbsp;Historiques&nbsp; </a>
+          </li>
+          <li>
+            <a routerLink="/tableauAv"><i class="fa-solid fa-list"></i> &nbsp;Tabeau d'avancements &nbsp; </a>
+          </li>
+          <li>
+            <a class="classDeconnexion"><span (click)="deconnexion()"><i class="fa-solid fa-right-from-bracket"></i> &nbsp; Déconnexion</span></a>
+        </li>       
+        </ul>
+      </nav>
+      <div class="container" *ngIf="!showLoader">
+        <header>Modifier Situation Personnel</header>
+        <form>
+<div class="form first">
+    <div class="details personal">
+        <span class="title">Derniere Situation</span><br>
+            <div class="fields">
+                <div class="input-field">
+                    <label>Matricule de Personnel</label>
+                    <input type="text" id="mle" [(ngModel)]="mlePersonnel" name="mle" disabled="true">
+                </div>
+                <div class="input-field">
+                    <label for="nom">Nom Personnel</label>
+                    <input type="text" id="nom" [(ngModel)]="recentAvancementPersonnel.nom" name="nom" disabled="true">
+                </div>
+                <div class="input-field">
+                    <label>Catégorie </label>
+                    <input  type ="text" id="cat" [(ngModel)]="recentAvancementPersonnel.cat" name="cat" disabled="true">
+                </div>
+                <div class="input-field" *ngIf="recentAvancementPersonnel.sCat != null">
+                    <label>Sous Catégorie</label>
+                    <input type ="text"  id="scat" [(ngModel)]="recentAvancementPersonnel.sCat" name="scat" disabled="true">
+                </div>
+                <div class="row">
+                    <div class="col" >
+                      <div class="input-field">
+                        <label for="ech">Echelon</label>
+                        <input type="text" id="ech" [(ngModel)]="recentAvancementPersonnel.ech" name="ech" disabled="true" class="form-control" style="width: 49px;">
+                      </div>
+                    </div>
+                    <div class="col" id="colDateEffet">
+                        <label for="dateEffet" class="custom-label">Date D'effet</label>
+                        <mat-form-field class="datePicker">
+                          <input matInput [matDatepicker]="customIcon1" placeholder="Choisir une date" [value]="dEffetTransformed" id="dateEffet">
+                          <mat-datepicker-toggle matSuffix [for]="customIcon1"></mat-datepicker-toggle>
+                          <mat-datepicker #customIcon1></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                      
+                      <div class="col" id="colDateEffet">
+                        <label for="dateEffet" class="custom-label">Date De Prochain Av</label>
+                        <mat-form-field class="datePicker">
+                          <input matInput [matDatepicker]="customIcon2" placeholder="Choisir une date" [value]="dPavTransformed" id="datePAv">
+                          <mat-datepicker-toggle matSuffix [for]="customIcon2"></mat-datepicker-toggle>
+                          <mat-datepicker #customIcon2></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                      
+                      
+                    <!--div class="col">
+                      <div class="input-field">
+                        <label for="dateEffet">Date D'effet</label>
+                        <input type="date" id="dateEffet" [value]="dEffetTransformed" name="dateEffet" disabled="true" class="form-control">
+                      </div>
+                    </div-->
+                    <!--div class="col">
+                      <div class="input-field">
+                        <label for="datePAv">Date De Prochain AV</label>
+                        <input type="date" id="datePAv" [value]="dPavTransformed" name="datePAv" disabled="true" class="form-control">
+                      </div>
+                    </div-->
+                </div>  
+                <div class="input-field" *ngIf="recentAvancementPersonnel.sbase">
+                    <label>Salaire de base</label>
+                    <input type ="text"  id="sbase" [(ngModel)]="recentAvancementPersonnel.sbase" name="sbase" disabled="true">
+                </div>      
+                <div class="input-field" *ngIf="recentAvancementPersonnel.th">
+                    <label>Taux horaire</label>
+                    <input type ="text"  id="th" [(ngModel)]="recentAvancementPersonnel.th" name="th" disabled="true">
+                </div>      
+                <div class="input-field" *ngIf="recentAvancementPersonnel.indDiff">
+                    <label>indemnité de fonction</label>
+                    <input type ="text"  id="indDiff" [(ngModel)]="recentAvancementPersonnel.indDiff" name="indDiff" disabled="true">
+                </div>        
+            </div>
+    </div>
+</div>
+            <div class="separator"></div>
+            <div class="form second">
+                <div class="details address">
+                    <span class="title">Nouvelle Situation</span><br>
+                    <div class="fields">
+                        <div class="input-field">
+                            <label>Matricule de Personnel</label>
+                            <input type="text" id="mle" [(ngModel)]="mlePersonnel" name="mle" disabled="true">
+                        </div>
+                        <div class="input-field">
+                            <label for="nom">Nom Personnel</label>
+                            <input type="text" id="nom" [(ngModel)]="recentAvancementPersonnel.nom" name="nom" disabled="true">
+                        </div>
+                        <div class="input-field">
+                            <label>Catégorie </label>
+                            <input type="number" id="catn" min="1" max="12" name="catn" [(ngModel)]="categorie" (ngModelChange)="onFieldChange()" required style="width: 190px;">
+                        </div>
+                        <div class="input-field" *ngIf="recentAvancementPersonnel.sCat != null">
+                            <label> Sous Catégorie </label>
+                            <select required id="scatn" name="scatn"   [(ngModel)]="sousCategorie" (ngModelChange)="onFieldChange()" [disabled]="!recentAvancementPersonnel || recentAvancementPersonnel.sCat === null">
+                                <option disabled selected>Select sous catégorie</option>
+                                <option>A1</option>
+                                <option>A2</option>
+                                <option>B1</option>
+                                <option>B2</option>
+                                <option>C1</option>
+                                <option>C2</option>
+                                <option>D1</option>
+                                <option>D2</option>
+                                <option>E1</option>
+                                <option>E2</option>
+                            </select>
+                        </div>
+                        <div class="row" style="height: 86px;">
+                            <div class="col" >
+                                <div class="input-field" >
+                                    <label for="echn">Echelon</label>
+                                    <input type="text" id="echn" name="echn" [(ngModel)]="echelon" class="form-control" min="1" max="40" style="width: 49px;" (ngModelChange)="onFieldChange()">
+                                </div>
+                            </div>
+     
+                        <div class="col" id="colDateEffet2">
+                          <label for="dateEffet" class="custom-label1">Date D'effet</label>
+                           <mat-form-field class="datePicker1">
+                            <input matInput [matDatepicker]="customIcon3" placeholder="choisir une date" [(ngModel)]="dateEffetn" name="dateEffetn" />
+                            <mat-datepicker-toggle matSuffix [for]="customIcon3">
+                              <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #customIcon3></mat-datepicker>
+                          </mat-form-field>
+                        </div>
+                        <div class="col" id="colDateEffet3">
+                          <label for="dateEffet" class="custom-label1">Date De Prochain Av</label>
+                          <mat-form-field class="datePicker1">
+                            <input matInput [matDatepicker]="customIcon4" placeholder="choisir une date"[(ngModel)]="datePAvn" name="datePAvn" />
+                            <mat-datepicker-toggle matSuffix [for]="customIcon4">
+                              <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #customIcon4></mat-datepicker>
+                          </mat-form-field>
+                        </div>                        
+
+                        </div>                                                        
+                        <div class="input-field" *ngIf="recentAvancementPersonnel.sbase" style="margin-top: 6px;">
+                            <label>Salaire de base</label>
+                            <input type ="text"  id="sbasen"  name="sbasen"  [(ngModel)]="nouvelleSituation.th">
+                        </div>      
+                        <div class="input-field"*ngIf="recentAvancementPersonnel.th" style="margin-top: 6px;">
+                            <label>Taux horaire</label>
+                            <input type="text" id="thn" name="thn" [(ngModel)]="nouvelleSituation.th">
+                        </div>
+                        
+                        <div class="input-field" *ngIf="recentAvancementPersonnel.indDiff">
+                            <label>Indemnité de fonction</label>
+                            <input type="text" id="indDiffn" name="indDiffn" [(ngModel)]="nouvelleSituation.indDiff">
+                        </div>
+                        
+                        
+                        
+                    </div>
+                </div>
+                
+                    <div class="buttons">
+                        <button id="backBtn" type="submit" class="submit" (click)="annulation()" >
+                            <span class="btnText">Annuler</span>
+                             <i class="uil uil-navigator"></i>
+                         </button>
+                        <button id="backBtn1" type="submit" class="submit" (click)="sauvgarde()" [disabled]="!categorie  || !echelon || !dateEffetn || !datePAvn">
+                           <span class="btnText">Enregistrer</span>
+                            <i class="uil uil-navigator"></i>
+                        </button>
+                    </div>
+                </div>
+        </form>
+    </div>
+    
